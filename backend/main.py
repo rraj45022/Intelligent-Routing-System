@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from backend.core.config import settings
 from backend.core.db import Base, engine
+from backend.models import associate, batch_ingestion, routing_audit, ticket_history, tickets, user  # noqa: F401
 from backend.routers import associates, routing, tickets
 from backend.routers import auth as auth_router
 from backend.services.ticket_feeder import ticket_feeder

@@ -4,7 +4,7 @@ import { useAuth } from "../auth/AuthContext.jsx";
 
 const navItems = [
   { to: "/agent", label: "Agent Dashboard", roles: ["agent", "admin"] },
-  { to: "/admin", label: "Admin Panel", roles: ["admin"] },
+  { to: "/admin", label: "Ops Dashboard", roles: ["admin"] },
 ];
 
 export function Sidebar() {

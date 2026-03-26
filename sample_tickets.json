@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Card payments fail after bank redirect",
+    "description": "Retail users return from bank authentication but checkout still shows payment declined.",
+    "module": "billing",
+    "priority": "High",
+    "customer_segment": "retail",
+    "channel": "web"
+  },
+  {
+    "title": "Enterprise users stuck in SSO login loop",
+    "description": "After a successful SAML callback, users are redirected back to the login page.",
+    "module": "auth",
+    "priority": "High",
+    "customer_segment": "enterprise",
+    "channel": "web"
+  },
+  {
+    "title": "Shipment labels missing for warehouse dispatch",
+    "description": "Bulk orders are not receiving labels from the dispatch connector this morning.",
+    "module": "shipping",
+    "priority": "Critical",
+    "customer_segment": "enterprise",
+    "channel": "support"
+  }
+]

@@ -10,7 +10,7 @@ from backend.core.config import settings
 from backend.core.db import Base
 
 # Import models so Alembic sees table metadata
-from backend.models import associate, tickets, user  # noqa: F401
+from backend.models import associate, batch_ingestion, routing_audit, ticket_history, tickets, user  # noqa: F401
 
 config = context.config
 

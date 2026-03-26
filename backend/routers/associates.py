@@ -24,7 +24,11 @@ async def create_associate(
 	associate = Associate(
 		name=associate_in.name,
 		skills=associate_in.skills,
+		skill_levels=associate_in.skill_levels,
 		active=associate_in.active,
+		availability_status=associate_in.availability_status,
+		daily_capacity=associate_in.daily_capacity,
+		max_concurrent_tickets=associate_in.max_concurrent_tickets,
 	)
 	db.add(associate)
 	await db.commit()

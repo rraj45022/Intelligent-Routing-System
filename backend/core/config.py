@@ -21,6 +21,21 @@ class Settings(BaseSettings):
     llm_provider: str = "openai"  # openai | grok | custom
     llm_base_url: str | None = None  # e.g., https://api.x.ai/v1 for Grok
     llm_weight: float = 0.4  # blending weight with ML score
+    llm_low_confidence_threshold: float = 0.72
+    llm_candidate_gap_threshold: float = 0.08
+
+    # History-based routing
+    history_similarity_threshold: float = 0.65
+    history_top_k: int = 5
+
+    # Persisted routing artifacts
+    routing_artifact_dir: str = "backend/artifacts"
+    routing_similarity_artifact_name: str = "ticket_similarity.joblib"
+    routing_embedding_model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
+    routing_embedding_batch_size: int = 64
+
+    # Batch routing
+    routing_batch_size: int = 25
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

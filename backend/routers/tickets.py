@@ -7,7 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.core.db import get_db
 from backend.models.tickets import StatusEnum, Ticket
 from backend.schemas.ticket import TicketCreate, TicketOut, TicketUpdate
+from backend.services.audit_service import log_routing_decision
 from backend.services.auth import get_current_active_user
+from backend.services.history_service import sync_resolved_ticket_to_history
 from backend.services.routing_services import pick_associate_for_ticket
 from backend.ws.ticket_stream import broadcast_ticket_event
 
@@ -39,6 +41,8 @@ async def create_ticket(
     db.add(ticket)
     await db.commit()
     await db.refresh(ticket)
+    await log_routing_decision(db, decision, ticket_id=ticket.id)
+    await db.commit()
 
     await broadcast_ticket_event(
         {
@@ -79,12 +83,14 @@ async def update_ticket(
     if ticket_update.assigned_associate_id is not None:
         ticket.assigned_associate_id = ticket_update.assigned_associate_id
 
-        if (
-            ticket_update.status == StatusEnum.Resolved
-            and original_status != StatusEnum.Resolved
-            and ticket.resolved_at is None
-        ):
-            ticket.resolved_at = datetime.utcnow()
+    if (
+        ticket_update.status == StatusEnum.Resolved
+        and original_status != StatusEnum.Resolved
+        and ticket.resolved_at is None
+    ):
+        ticket.resolved_at = datetime.utcnow()
+
+    await sync_resolved_ticket_to_history(db, ticket)
 
     await db.commit()
     await db.refresh(ticket)

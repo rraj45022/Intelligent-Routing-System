@@ -41,11 +41,16 @@ async def score_with_llm(
 
     subset = list(associates)[: max(1, top_k)]
     candidate_text = "\n".join(
-        f"- id: {a.id}, name: {a.name}, skills: {', '.join(a.skills or [])}" for a in subset
+        (
+            f"- id: {a.id}, name: {a.name}, skills: {', '.join(a.skills or [])}, "
+            f"skill_levels: {a.skill_levels or {}}, availability: {a.availability_status.value}, "
+            f"daily_capacity: {a.daily_capacity}, max_concurrent_tickets: {a.max_concurrent_tickets}"
+        )
+        for a in subset
     )
     prompt = (
         "You are selecting the best associate to handle a ticket. "
-        "Score each candidate between 0 and 1 (higher is better) based on skill match and general suitability. "
+        "Score each candidate between 0 and 1 (higher is better) based on skill fit, availability, capacity, and general suitability. "
         "Respond with JSON object mapping associate_id to score."
     )
 
